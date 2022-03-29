@@ -2,7 +2,9 @@ const path = require('path');
 // const webpack = require('webpack')
 
 module.exports = {
-    entry: './frontend/app.tsx',
+    entry: {
+        index: './frontend/app.tsx'
+    },
     mode: 'development',
     module: {
         rules: [
@@ -19,6 +21,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'static/dist'),
         publicPath: 'static/dist',
-        filename: 'bundle.js'
+        filename: 'bundle.js',
+        clean: true
     },
 }
