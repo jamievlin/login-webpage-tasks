@@ -401,21 +401,6 @@ psd
 thumb
 sketch
 
-### Web ###
-*.asp
-*.cer
-*.csr
-*.css
-*.htm
-*.html
-*.js
-*.jsp
-*.php
-*.rss
-*.wasm
-*.wat
-*.xhtml
-
 ### Windows ###
 # Windows thumbnail cache files
 Thumbs.db
@@ -443,3 +428,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/python,flask,react,intellij,web,windows,linux,go
+
+static/dist/**/*.js
+tscout/**/*.js
