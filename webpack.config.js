@@ -12,6 +12,10 @@ module.exports = {
                 test: /\.(ts|tsx)$/,
                 exclude: /(node_modules|bower_components)/,
                 loader: 'ts-loader'
+            },
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader']
             }
         ]
     },

@@ -1,6 +1,7 @@
 import React, {ChangeEventHandler} from 'react';
 import ReactDOM from 'react-dom';
 import { Buffer } from 'buffer';
+import './app.css';
 
 type AppState = {
     username: string,
@@ -53,7 +54,7 @@ class App extends React.Component<{}, AppState> {
 
     render() {
         return (
-            <>
+            <div className="App">
                 Username:
                 <input type="text" value={this.state.username} name="username" onChange={this.onUsernameTextChange} />
                 <br />
@@ -61,11 +62,10 @@ class App extends React.Component<{}, AppState> {
                 <input type="password" value={this.state.password} name="pwd" onChange={this.onPasswordTextChange}/>
                 <br />
                 <button onClick={this.onLoginButtonClick}>Login</button>
-            </>
+            </div>
         );
     }
 }
-
 
 const domId = document.querySelector('#login_page');
 ReactDOM.render(<App />, domId);
