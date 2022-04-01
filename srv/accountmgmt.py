@@ -46,9 +46,10 @@ def verify_login(username: str, password: str) -> bool:
     with db_conn() as cur:
         try:
             cur.execute(query, (username,))
-            for pwdhash, in cur:
-                cmp_hash = pwdhash
-                break
+            row = cur.fetchone()
+            if row is None:
+                return False
+            cmp_hash, = row
         except mariadb.Error as e:
             print(f'Error: {e}')
             return False
