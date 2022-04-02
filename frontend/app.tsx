@@ -1,6 +1,12 @@
-import React, {ChangeEventHandler} from 'react';
+import React, { FormEvent } from 'react';
 import ReactDOM from 'react-dom';
 import { Buffer } from 'buffer';
+import { CdsButton } from "@cds/react/button";
+import { CdsInput } from "@cds/react/input";
+import { CdsPassword } from "@cds/react/password";
+import { CdsFormGroup } from "@cds/react/forms";
+
+import '@cds/core/global.min.css'
 import './app.css';
 
 type AppState = {
@@ -19,7 +25,7 @@ class App extends React.Component<{}, AppState> {
         // functions
         this.onUsernameTextChange = this.onUsernameTextChange.bind(this);
         this.onPasswordTextChange = this.onPasswordTextChange.bind(this);
-        this.onLoginButtonClick = this.onLoginButtonClick.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
     }
 
     onUsernameTextChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -48,21 +54,36 @@ class App extends React.Component<{}, AppState> {
         }
     }
 
-    onLoginButtonClick() {
-        const _ = this.login();
+    onSubmit(ev: FormEvent<HTMLFormElement>) {
+        ev.preventDefault();
+        this.login().then(() => {
+        });
     }
 
     render() {
         return (
-            <div className="App">
-                Username:
-                <input type="text" value={this.state.username} name="username" onChange={this.onUsernameTextChange} />
-                <br />
-                Password:
-                <input type="password" value={this.state.password} name="pwd" onChange={this.onPasswordTextChange}/>
-                <br />
-                <button onClick={this.onLoginButtonClick}>Login</button>
-            </div>
+            <form onSubmit={this.onSubmit}>
+                <CdsFormGroup layout="horizontal" className="LoginForm">
+                    <CdsInput>
+                        <label>Username</label>
+                        <input
+                            value={this.state.username}
+                            name="username"
+                            onChange={this.onUsernameTextChange}
+                        />
+                    </CdsInput>
+
+                    <CdsPassword>
+                        <label>Password</label>
+                        <input type="password"
+                               value={this.state.password}
+                               name="pwd"
+                               onChange={this.onPasswordTextChange}
+                        />
+                    </CdsPassword>
+                    <CdsButton type="submit">Login</CdsButton>
+                </CdsFormGroup>
+            </form>
         );
     }
 }
