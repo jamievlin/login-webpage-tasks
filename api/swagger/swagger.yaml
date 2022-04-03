@@ -21,6 +21,16 @@ components:
           type: boolean
       required:
         - valid
+    LoginSession:
+      type: object
+      properties:
+        session:
+          type: string
+        expiry:
+          type: string
+      required:
+        - session
+        - expiry
 
 security:
   - basic: []
@@ -39,3 +49,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TestLogin'
+
+  /login:
+    post:
+      operationId: loginPost
+      summary: generates a session token
+      security:
+        - basic: []
+      responses:
+        '201':
+          description: 'successful'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginSession'
