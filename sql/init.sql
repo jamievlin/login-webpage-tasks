@@ -11,6 +11,14 @@ CREATE TABLE IF NOT EXISTS login_webpage.user_login (
     PRIMARY KEY (user_id)
 );
 
+CREATE TABLE IF NOT EXISTS login_webpage.sessions (
+    session_id BINARY(32) NOT NULL,
+    user_id INT NOT NULL,
+    expiry TIMESTAMP NOT NULL,
+    ip_addr BINARY(16),
+    PRIMARY KEY (session_id)
+);
+
 GRANT ALTER, INSERT, UPDATE, DELETE, SELECT,
     REFERENCES
     ON login_webpage.*
