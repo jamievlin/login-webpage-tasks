@@ -1,6 +1,5 @@
 import React, { FormEvent } from 'react';
 import ReactDOM from 'react-dom';
-import { Buffer } from 'buffer';
 import { CdsButton } from "@cds/react/button";
 import { CdsInput } from "@cds/react/input";
 import { CdsPassword } from "@cds/react/password";
@@ -8,6 +7,9 @@ import { CdsFormGroup } from "@cds/react/forms";
 
 import '@cds/core/global.min.css'
 import './app.css';
+
+import './apis';
+import {Configuration, DefaultApi} from "./apis";
 
 type AppState = {
     username: string,
@@ -36,28 +38,17 @@ class App extends React.Component<{}, AppState> {
         this.setState({password: e.target.value})
     }
 
-    async login() {
-        const loginstr = Buffer.from(`${this.state.username}:${this.state.password}`).toString('base64');
-        const rsp = await fetch(`${window.location.origin}/api/testlogin`, {
-            method: "GET",
-            headers: new Headers({
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': `Basic ${loginstr}`
-            })
-        });
-        const ret = await rsp.json()
-        if (ret.valid) {
-            alert('login success!')
-        } else {
-            alert('login failure!')
-        }
+    login() {
+        const defaultApiInst = new DefaultApi(new Configuration({
+            username: this.state.username,
+            password: this.state.password
+        }));
+        defaultApiInst.testLoginGet().then(rsp => alert(`valid: ${rsp.valid}`));
     }
 
     onSubmit(ev: FormEvent<HTMLFormElement>) {
         ev.preventDefault();
-        this.login().then(() => {
-        });
+        this.login();
     }
 
     render() {
