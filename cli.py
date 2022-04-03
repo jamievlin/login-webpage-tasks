@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import srv.accountmgmt as am
 import getpass
+import ipaddress
 
 TEST_USER = 'jamie'
 TEST_PASSWORD = 'letmein'
@@ -8,8 +9,11 @@ TEST_PASSWORD = 'letmein'
 
 def ev_loop(username: str):
     alive = True
+    print(f'userid: {am.get_userid(username)}')
     while alive:
         print('enter c to change password.')
+        print('enter cs to clear all sessions')
+        print('enter ns to create a new session')
         print('enter e to exit')
         inp = input('input: ')
         match inp:
@@ -20,6 +24,18 @@ def ev_loop(username: str):
                     am.change_password(username, new_pw)
                 else:
                     print('Password does not match!')
+            case 'ns':
+                ret = am.create_session(
+                    username,
+                    ipaddress.IPv4Address('127.0.0.1'))
+                if ret is None:
+                    print('error!')
+                    continue
+                new_session, expiry = ret
+                print(f'session token: 0x{new_session.hex()}')
+                print(f'expiry: {expiry.isoformat()}')
+            case 'cs':
+                am.clear_all_session(username)
             case 'e':
                 alive = False
                 continue
