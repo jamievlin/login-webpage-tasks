@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 import mariadb
 from passlib.hash import argon2
-from .db_helper import db_conn
+
+from .db_helper import db_conn, fetch_one
 
 
 def create_user(username: str, password: str):
@@ -43,14 +44,8 @@ def verify_login(username: str, password: str) -> bool:
     FROM login_webpage.user_login
     WHERE user_name=%s
     """
-    with db_conn() as cur:
-        try:
-            cur.execute(query, (username,))
-            row = cur.fetchone()
-            if row is None:
-                return False
-            cmp_hash, = row
-        except mariadb.Error as e:
-            print(f'Error: {e}')
-            return False
+    ret = fetch_one(query, (username, ))
+    if ret is None:
+        return False
+    cmp_hash, = ret
     return argon2.verify(password, cmp_hash)
