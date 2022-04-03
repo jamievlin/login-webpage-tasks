@@ -431,5 +431,6 @@ $RECYCLE.BIN/
 
 static/dist/**/*.js
 tscout/**/*.js
+frontend/apis/**
 
 **/http-client.private.env.json
