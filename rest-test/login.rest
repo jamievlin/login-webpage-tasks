@@ -1,3 +1,8 @@
 # curl http://localhost:5000/api/testlogin -u jamie:letmein
 GET http://{{hostname}}/api/testlogin
 Authorization: Basic {{base_username}} {{base_password}}
+
+
+###
+POST http://{{hostname}}/api/login
+Authorization: Basic {{base_username}} {{base_password}}
