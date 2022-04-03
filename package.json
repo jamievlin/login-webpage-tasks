@@ -8,6 +8,7 @@
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.4.26",
     "@types/react": "^17.0.43",
     "@types/react-dom": "^17.0.14",
     "babel-cli": "^6.26.0",
@@ -15,6 +16,7 @@
     "better-npm-run": "^0.1.1",
     "css-loader": "^6.7.1",
     "isomorphic-fetch": "^3.0.0",
+    "rimraf": "^3.0.2",
     "style-loader": "^3.3.1",
     "ts-loader": "^9.2.8",
     "typescript": "^4.6.3",
@@ -24,8 +26,13 @@
     "webpack-dev-server": "^4.7.4"
   },
   "betterScripts": {
+    "clean:api": "rimraf frontend/apis/",
+    "clean:bundle": "rimraf static/dist/bundle.js",
+    "clean:all": "bnr clean:api && bnr clean:bundle",
+    "build:api": "openapi-generator-cli generate -g typescript-fetch -i api/swagger/swagger.yaml -o frontend/apis -c api/swagger/config.json",
     "build:dev": "webpack --mode development",
     "build:dist": "webpack",
+    "build:all-dev": "bnr build:api && bnr build:dev",
     "start:dev": {
       "command": "python loginpage.py",
       "env": {
@@ -34,6 +41,8 @@
     }
   },
   "scripts": {
+    "clean": "bnr clean:all",
+    "build-all-dev": "bnr build:all-dev",
     "build-dev": "bnr build:dev",
     "build-dist": "bnr build:dist",
     "start-dev": "bnr start:dev"
