@@ -1,4 +1,10 @@
 {
+  "exclude": [
+    "frontend/**/*.spec.ts",
+    "frontend/**/*.spec.tsx",
+    "node_modules/",
+    "bower_components"
+  ],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
 
