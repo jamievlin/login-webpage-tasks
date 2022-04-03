@@ -1,0 +1,41 @@
+openapi: 3.0.0
+info:
+  description: 'REST API endpoints for login-webpage'
+  version: '0.0.0'
+  title: 'login-webpage API endpoint'
+
+servers:
+  - url: http://localhost:5000/api
+    description: dev server
+
+components:
+  securitySchemes:
+    basic:
+      type: http
+      scheme: basic
+  schemas:
+    TestLogin:
+      type: object
+      properties:
+        valid:
+          type: boolean
+      required:
+        - valid
+
+security:
+  - basic: []
+
+paths:
+  /testlogin:
+    get:
+      operationId: testLoginGet
+      summary: 'check if login works or not'
+      security:
+        - basic: []
+      responses:
+        '200':
+          description: 'successful'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestLogin'
