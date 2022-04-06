@@ -12,7 +12,7 @@ login_page = Blueprint('login_endpoint', __name__, template_folder='templates')
 
 @login_page.route('/api/testlogin', methods=['GET'])
 def test_login():
-    usr = auth.get_username_auth()
+    usr = auth.get_username_by_pw_or_session()
     return jsonify(valid=usr is not None), 200
 
 
