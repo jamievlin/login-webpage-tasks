@@ -8,8 +8,8 @@ import { CdsFormGroup } from "@cds/react/forms";
 import '@cds/core/global.min.css'
 import './app.css';
 
-import './apis';
-import {Configuration, DefaultApi} from "./apis";
+import '../apis';
+import {Configuration, DefaultApi} from "../apis";
 
 type AppState = {
     username: string,

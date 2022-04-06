@@ -3,7 +3,7 @@ const path = require('path');
 
 module.exports = {
     entry: {
-        index: './frontend/app.tsx'
+        index: './frontend/app/app.tsx'
     },
     mode: 'development',
     module: {
@@ -20,7 +20,8 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: ['*', '.js', 'jsx', '.ts', '.tsx']
+        extensions: ['*', '.js', 'jsx', '.ts', '.tsx'],
+        modules: [ path.join(__dirname, './frontend'), 'node_modules']
     },
     output: {
         path: path.resolve(__dirname, 'static/dist'),
