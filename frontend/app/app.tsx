@@ -1,5 +1,4 @@
 import React, { FormEvent } from 'react';
-import ReactDOM from 'react-dom';
 import { CdsButton } from "@cds/react/button";
 import { CdsInput } from "@cds/react/input";
 import { CdsPassword } from "@cds/react/password";
@@ -122,5 +121,4 @@ class App extends React.Component<{}, AppState> {
     }
 }
 
-const domId = document.querySelector('#login_page');
-ReactDOM.render(<App />, domId);
+export default App;

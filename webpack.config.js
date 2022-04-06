@@ -3,7 +3,7 @@ const path = require('path');
 
 module.exports = {
     entry: {
-        index: './frontend/app/app.tsx'
+        index: './frontend/index.html.tsx'
     },
     mode: 'development',
     module: {
