@@ -8,12 +8,21 @@ import { CdsFormGroup } from "@cds/react/forms";
 import '@cds/core/global.min.css'
 import './app.css';
 
-import '../apis';
-import {Configuration, DefaultApi} from "../apis";
+import 'apis';
+import {Configuration, DefaultApi} from "apis";
+
+import {CdsAlert, CdsAlertGroup} from "@cds/react/alert";
+
+enum loginState {
+    default = 0,
+    loginSuccess,
+    loginFailed
+}
 
 type AppState = {
     username: string,
-    password: string
+    password: string,
+    loginState: loginState
 }
 
 class App extends React.Component<{}, AppState> {
@@ -21,7 +30,8 @@ class App extends React.Component<{}, AppState> {
         super(prop);
         this.state = {
             username: "",
-            password: ""
+            password: "",
+            loginState: loginState.default
         }
 
         // functions
@@ -43,7 +53,13 @@ class App extends React.Component<{}, AppState> {
             username: this.state.username,
             password: this.state.password
         }));
-        defaultApiInst.testLoginGet().then(rsp => alert(`valid: ${rsp.valid}`));
+        defaultApiInst.testLoginGet().then(rsp => {
+            if (rsp.valid) {
+                this.setState({loginState: loginState.loginSuccess});
+            } else {
+                this.setState({loginState: loginState.loginFailed});
+            }
+        });
     }
 
     onSubmit(ev: FormEvent<HTMLFormElement>) {
@@ -51,9 +67,36 @@ class App extends React.Component<{}, AppState> {
         this.login();
     }
 
+    renderAlert(): JSX.Element {
+        switch (this.state.loginState) {
+            case loginState.loginSuccess:
+                return (
+                    <CdsAlertGroup status="success">
+                        <CdsAlert closable onClick={() => {
+                            this.setState({loginState: loginState.default})
+                        }}>
+                            Login Success!
+                        </CdsAlert>
+                    </CdsAlertGroup>
+                );
+            case loginState.loginFailed:
+                return (<CdsAlertGroup status="danger">
+                    <CdsAlert closable onClick={() => {
+                        this.setState({loginState: loginState.default})
+                    }}>
+                        Login failed!
+                    </CdsAlert>
+                </CdsAlertGroup>);
+            case loginState.default:
+            default:
+                return (<></>);
+        }
+    }
+
     render() {
         return (
             <form onSubmit={this.onSubmit}>
+                {this.renderAlert()}
                 <CdsFormGroup layout="horizontal" className="LoginForm">
                     <CdsInput>
                         <label>Username</label>
