@@ -13,6 +13,9 @@ components:
     basic:
       type: http
       scheme: basic
+    bearer:
+      type: http
+      scheme: bearer
   schemas:
     TestLogin:
       type: object
