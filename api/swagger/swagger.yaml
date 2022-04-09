@@ -74,3 +74,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/failedMessage'
+  /userdata:
+    get:
+      operationId: userDataGet
+      summary: retrieve basic user data
+      security:
+        - basic: []
+        - bearer: []
+      responses:
+        '200':
+          description: 'successful'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                required:
+                  - username
+        '404':
+          description: 'failure'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/failedMessage"
+

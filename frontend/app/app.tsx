@@ -52,13 +52,12 @@ class App extends React.Component<{}, AppState> {
             username: this.state.username,
             password: this.state.password
         }));
-        defaultApiInst.testLoginGet().then(rsp => {
-            if (rsp.valid) {
-                this.setState({loginState: loginState.loginSuccess});
-                window.location.href = `${window.location.origin}/userinfo`
-            } else {
-                this.setState({loginState: loginState.loginFailed});
-            }
+        defaultApiInst.loginPost().then(rsp => {
+            this.setState({loginState: loginState.loginSuccess});
+            sessionStorage['session'] = rsp.session
+            window.location.href = `${window.location.origin}/userinfo`
+        }).catch((err: Response) => {
+            this.setState({loginState: loginState.loginFailed});
         });
     }
 
