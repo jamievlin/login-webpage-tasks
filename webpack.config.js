@@ -3,7 +3,8 @@ const path = require('path');
 
 module.exports = {
     entry: {
-        index: './frontend/index.html.tsx'
+        index: './frontend/index.html.tsx',
+        user_page: './frontend/userpage.html.tsx'
     },
     mode: 'development',
     module: {
@@ -26,7 +27,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'static/dist'),
         publicPath: 'static/dist',
-        filename: 'bundle.js',
+        filename: '[name].bundle.js',
         clean: true
     },
 }

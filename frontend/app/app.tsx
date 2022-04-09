@@ -55,6 +55,7 @@ class App extends React.Component<{}, AppState> {
         defaultApiInst.testLoginGet().then(rsp => {
             if (rsp.valid) {
                 this.setState({loginState: loginState.loginSuccess});
+                window.location.href = `${window.location.origin}/userinfo`
             } else {
                 this.setState({loginState: loginState.loginFailed});
             }
