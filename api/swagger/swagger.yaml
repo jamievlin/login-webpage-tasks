@@ -16,6 +16,13 @@ components:
     bearer:
       type: http
       scheme: bearer
+  schemas:
+    failedMessage:
+      type: object
+      properties:
+        message:
+          type: string
+
 
 security:
   - basic: []
@@ -61,3 +68,9 @@ paths:
                 required:
                   - session
                   - expiry
+        '401':
+          description: 'failed'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/failedMessage'

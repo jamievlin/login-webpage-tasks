@@ -20,10 +20,10 @@ def test_login():
 def login():
     usr = auth.get_username_auth()
     if usr is None:
-        abort(Response('User login failed!', 401))
+        return jsonify(message='User login failed!'), 401
     ret = am.create_session(usr, IPv4Address(request.remote_addr))
     if ret is None:
-        abort(Response('Cannot create user session', 401))
+        return jsonify(message='Cannot create user session'), 401
     session, exp = ret
 
     retval = {
