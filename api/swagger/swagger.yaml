@@ -16,24 +16,6 @@ components:
     bearer:
       type: http
       scheme: bearer
-  schemas:
-    TestLogin:
-      type: object
-      properties:
-        valid:
-          type: boolean
-      required:
-        - valid
-    LoginSession:
-      type: object
-      properties:
-        session:
-          type: string
-        expiry:
-          type: string
-      required:
-        - session
-        - expiry
 
 security:
   - basic: []
@@ -51,7 +33,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TestLogin'
+                type: object
+                properties:
+                  valid:
+                    type: boolean
+                required:
+                  - valid
 
   /login:
     post:
@@ -65,4 +52,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LoginSession'
+                type: object
+                properties:
+                  session:
+                    type: string
+                  expiry:
+                    type: string
+                required:
+                  - session
+                  - expiry
