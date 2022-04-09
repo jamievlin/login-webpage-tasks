@@ -27,7 +27,7 @@ def login():
     session, exp = ret
 
     retval = {
-        'token': session.hex(),
+        'session': session.hex(),
         'expiry': exp.isoformat()
     }
     return jsonify(**retval), 201
