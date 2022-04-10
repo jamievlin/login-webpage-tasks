@@ -2,6 +2,7 @@ import React, {MouseEvent} from "react";
 import '@cds/core/global.min.css'
 import './userinfo.css';
 import {Configuration, DefaultApi} from "../apis";
+import { CdsButton } from "@cds/react/button";
 
 
 interface UserInfoState {
@@ -48,7 +49,7 @@ class UserInfo extends React.Component<{}, UserInfoState> {
         })
     }
 
-    onLogoutBtnClick(ev: MouseEvent<HTMLButtonElement>) {
+    onLogoutBtnClick() {
         console.log('hello?')
         this.state.api?.deleteSession().then(() => {
             sessionStorage.removeItem('session');
@@ -61,10 +62,10 @@ class UserInfo extends React.Component<{}, UserInfoState> {
 
     render() {
         return (
-            <>
-            Welcome, {this.state.username}.
-            <button onClick={this.onLogoutBtnClick}>logout</button>
-            </>
+            <div cds-layout={"vertical gap:md"}>
+                <p cds-text={"display"}>Welcome, {this.state.username}</p>
+                <CdsButton onClick={this.onLogoutBtnClick}>Logout</CdsButton>
+            </div>
         );
     }
 }
