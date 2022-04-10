@@ -99,4 +99,30 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/failedMessage"
+  /logout:
+    delete:
+      operationId: deleteSession
+      summary: deletes curerent session
+      security:
+        - bearer: []
+      responses:
+        '204':
+          description: 'session destroyed'
+          content:
+            application/json:
+              schema: {}
+        '404':
+          description: 'token not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/failedMessage'
+        '500':
+          description: 'cannot remove token for some reason'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/failedMessage'
+
+
 

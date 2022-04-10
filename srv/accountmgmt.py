@@ -150,3 +150,19 @@ def verify_login(username: str, password: str) -> bool:
         return False
     cmp_hash, = ret
     return argon2.verify(password, cmp_hash)
+
+
+def delete_session(session: bytes) -> bool:
+    query = """
+    DELETE FROM login_webpage.sessions
+    WHERE session_id=%s
+    """
+
+    with db_conn(True) as cur:
+        try:
+            cur.execute(query, (session, ))
+        except mariadb.Error as e:
+            print(f'error: {e}')
+            return False
+    return True
+

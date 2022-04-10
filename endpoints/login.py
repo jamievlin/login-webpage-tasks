@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from flask import (
-    Blueprint, jsonify, request, abort, Response
+    Blueprint, jsonify, request, current_app
 )
 from utils import auth
 from ipaddress import IPv4Address
@@ -34,4 +34,24 @@ def login():
         'session': session.hex(),
         'expiry': exp.isoformat()
     }
-    return jsonify(**retval), 201
+    return jsonify(**retval), HTTPStatus.CREATED
+
+
+@login_page.route('/api/logout', methods=['DELETE'])
+def logout():
+    tok = auth.get_bearer_if_exists()
+    if tok is None:
+        return jsonify(message='Invalid token!'), HTTPStatus.NOT_FOUND
+
+    usr = auth.get_username_by_session()
+
+    if not am.delete_session(tok):
+        return jsonify(message='Cannot remove session for some reason!'), \
+               HTTPStatus.INTERNAL_SERVER_ERROR
+
+    current_app.logger.info(f'User {usr} '
+                            f'logged out successfully')
+
+    return jsonify(), HTTPStatus.NO_CONTENT
+
+
