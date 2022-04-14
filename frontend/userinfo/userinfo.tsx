@@ -1,8 +1,8 @@
 import React, {MouseEvent} from "react";
 import '@cds/core/global.min.css'
-import './userinfo.css';
 import {Configuration, DefaultApi} from "../apis";
 import { CdsButton } from "@cds/react/button";
+import  './userinfo.less';
 
 
 interface UserInfoState {

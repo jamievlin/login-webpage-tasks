@@ -5,7 +5,7 @@ import { CdsPassword } from "@cds/react/password";
 import { CdsFormGroup } from "@cds/react/forms";
 
 import '@cds/core/global.min.css'
-import './app.css';
+import './app.less';
 
 import 'apis';
 import {Configuration, DefaultApi} from "apis";
@@ -96,7 +96,7 @@ class App extends React.Component<{}, AppState> {
         return (
             <form onSubmit={this.onSubmit}>
                 {this.renderAlert()}
-                <CdsFormGroup layout="horizontal" className="LoginForm">
+                <CdsFormGroup layout="horizontal" className={"LoginForm"}>
                     <CdsInput>
                         <label>Username</label>
                         <input
