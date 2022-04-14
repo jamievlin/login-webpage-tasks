@@ -1,6 +1,8 @@
-import React, {MouseEvent} from "react";
+import React from "react";
 import {Configuration, DefaultApi} from "../apis";
-import { CdsButton } from "@cds/react/button";
+
+import MsgCards from 'components/msgcards/msgcards'
+
 import  './userinfo.less';
 
 
@@ -61,9 +63,20 @@ class UserInfo extends React.Component<{}, UserInfoState> {
 
     render() {
         return (
-            <div cds-layout={"vertical gap:md"}>
-                <p cds-text={"display"}>Welcome, {this.state.username}</p>
-                <CdsButton onClick={this.onLogoutBtnClick}>Logout</CdsButton>
+            <div className={"app-layout"} cds-layout={"vertical align:stretch"}>
+                <header className={"app-header"} cds-layout={"horizontal p:md p@md:lg"}>
+                    <div>App</div>
+                    <a href="#"
+                       onClick={this.onLogoutBtnClick}
+                       cds-layout={"align:right"}>Logout</a>
+                </header>
+                <div cds-layout={"m:md"}>
+                    <div className={"app-card-layout"} cds-layout={"grid cols@md:6 cols@lg:3 gap:md"} >
+                    { ['good','afternoon','everybody'].map((s,i) => (
+                        <MsgCards key={s} initMessage={s} onDelete={() => {}}/>
+                    ))}
+                    </div>
+                </div>
             </div>
         );
     }
