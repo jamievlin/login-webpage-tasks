@@ -11,11 +11,13 @@ MARIADB_DATETIME_PARSERINFO = parser.parserinfo(
     yearfirst=True
 )
 
+M = ty.TypeVar('M', bound='Message')
+
 
 class Message:
     def __init__(
             self,
-            msg_id: int, user_id: int,
+            msg_id: int | None, user_id: int,
             starred: bool | int = False,
             created: datetime | str = datetime.now(),
             updated: datetime | str = datetime.now(),
@@ -48,7 +50,8 @@ class Message:
         }
 
     @classmethod
-    def get_msg_by_user(cls, user_id: int, max_count=100) -> ty.List:
+    def get_msg_by_user(cls: ty.Type[M], user_id: int, max_count=100) \
+            -> ty.List[M]:
         query = """
         SELECT * 
         FROM login_webpage.tasks_collection
