@@ -9,7 +9,8 @@ TEST_PASSWORD = 'letmein'
 
 def ev_loop(username: str):
     alive = True
-    print(f'userid: {am.get_userid(username)}')
+    user_id = am.get_userid(username)
+    print(f'userid: {user_id}')
     while alive:
         print('enter c to change password.')
         print('enter cs to clear all sessions')
