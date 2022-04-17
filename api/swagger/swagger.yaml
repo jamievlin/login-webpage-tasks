@@ -22,7 +22,29 @@ components:
       properties:
         message:
           type: string
-
+    task:
+      type: object
+      properties:
+        created:
+          type: string
+        msg_id:
+          type: integer
+        starred:
+          type: boolean
+        text:
+          type: string
+        updated:
+          type: string
+        user_id:
+          type: integer
+      required:
+        - msg_id
+        - created
+        - text
+    tasks:
+      type: array
+      items:
+        $ref: '#/components/schemas/task'
 
 security:
   - basic: []
@@ -46,7 +68,33 @@ paths:
                     type: boolean
                 required:
                   - valid
-
+  /user/{userid}/tasks:
+    get:
+      operationId: tasksGet
+      summary: fetch all tasks for a user
+      security:
+        - basic: []
+        - bearer: []
+      parameters:
+        - name: userid
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'successful'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tasks'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/failedMessage'
   /login:
     post:
       operationId: loginPost
@@ -91,8 +139,11 @@ paths:
                 properties:
                   username:
                     type: string
+                  userid:
+                    type: integer
                 required:
                   - username
+                  - userid
         '404':
           description: 'failure'
           content:
@@ -123,6 +174,3 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/failedMessage'
-
-
-
