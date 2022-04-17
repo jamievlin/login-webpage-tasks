@@ -4,7 +4,7 @@ from dateutil import parser
 import mysql.connector
 import typing as ty
 
-from .db_helper import DbCursor
+from .db_helper import DbCursor, DbConnection, cursor_commit
 
 MARIADB_DATETIME_PARSERINFO = parser.parserinfo(
     dayfirst=False,
@@ -38,6 +38,27 @@ class Message:
         self.created = created
         self.updated = updated
         self.text = text
+
+    def save_to_db(self) -> int | None:
+        query = """
+        INSERT INTO login_webpage.tasks_collection
+        (user_id, starred, created, updated, content)
+        VALUES (%s, %s, %s, %s, %s)
+        """
+
+        with DbConnection() as conn:
+            with cursor_commit(conn) as cur:
+                try:
+                    cur.execute(query,
+                                (self.user_id, self.starred, self.created,
+                                 self.updated, self.text))
+                except mysql.connector.Error as e:
+                    print(f'Error: {e}')
+                    return None
+            cur2 = conn.cursor()
+            cur2.execute("SELECT LAST_INSERT_ID()")
+            self.msg_id, = cur2.fetchone()
+        return self.user_id
 
     def dictify(self) -> dict:
         return {
