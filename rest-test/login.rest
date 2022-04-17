@@ -4,5 +4,26 @@ Authorization: Basic {{base_username}} {{base_password}}
 
 
 ###
+GET http://{{hostname}}/api/testlogin
+Authorization: Bearer 338ae04436de8d00ea9576d08ff45d229acee3fd5782b8b298a4973cd23415fe
+
+
+###
 POST http://{{hostname}}/api/login
+Authorization: Basic {{base_username}} {{base_password}}
+
+
+###
+POST http://{{hostname}}/api/login
+Authorization: Basic does_not_exist does_not_exist
+
+
+###
+# should not work - api/login is username/pw only
+POST http://{{hostname}}/api/login
+Authorization: Bearer 338ae04436de8d00ea9576d08ff45d229acee3fd5782b8b298a4973cd23415fe
+
+
+### sample getting tasks
+GET http://{{hostname}}/api/user/3/tasks
 Authorization: Basic {{base_username}} {{base_password}}
