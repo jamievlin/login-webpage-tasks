@@ -4,6 +4,30 @@ from contextlib import contextmanager
 import typing as ty
 
 
+class DbConnection:
+    def __init__(self):
+        self._connection = mysql.connector.MySQLConnection(
+            user='default', password='password',
+            host='localhost', port=3306,
+            database='login_webpage'
+        )
+
+    def __enter__(self):
+        return self._connection
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self._connection.close()
+        return False
+
+
+@contextmanager
+def cursor_commit(connection: mysql.connector.MySQLConnection):
+    try:
+        yield connection.cursor()
+    finally:
+        connection.commit()
+
+
 class DbCursor:
     def __init__(self, commit=False):
         self._connection = mysql.connector.MySQLConnection(
