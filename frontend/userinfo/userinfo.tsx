@@ -1,6 +1,6 @@
 import React from "react";
-import {Configuration, DefaultApi} from "../apis";
-
+import {Configuration, DefaultApi} from "apis";
+import { Task } from "apis/models/Task"
 import MsgCards from 'components/msgcards/msgcards'
 
 import  './userinfo.less';
@@ -9,6 +9,8 @@ import  './userinfo.less';
 interface UserInfoState {
     api?: DefaultApi
     username: string
+    userid: number
+    tasks: Task[]
 }
 
 function returnToLogin() {
@@ -20,7 +22,9 @@ class UserInfo extends React.Component<{}, UserInfoState> {
         super(props);
         this.state = {
             api: undefined,
-            username: ''
+            username: '',
+            userid: -1,
+            tasks: []
         };
 
         this.setComponentValues = this.setComponentValues.bind(this);
@@ -42,12 +46,29 @@ class UserInfo extends React.Component<{}, UserInfoState> {
 
     setComponentValues() {
         if (this.state.api === undefined) {
+            console.error('API cannot be undefined!')
             return;
         }
 
+        const updateTasks = async (api?: DefaultApi) => {
+            if (api === undefined) {
+                return;
+            }
+            const newTasks = await api.tasksGet({
+                userid: this.state.userid
+            });
+            this.setState({
+                tasks: newTasks
+            })
+        }
+
         this.state.api.userDataGet().then(rsp => {
-            this.setState({username: rsp.username});
+            this.setState({
+                username: rsp.username,
+                userid: rsp.userid
+            }, () => { updateTasks(this.state.api).then() })
         })
+
     }
 
     onLogoutBtnClick() {
@@ -72,8 +93,8 @@ class UserInfo extends React.Component<{}, UserInfoState> {
                 </header>
                 <div cds-layout={"m:md"}>
                     <div className={"app-card-layout"} cds-layout={"grid cols@md:6 cols@lg:3 gap:md"} >
-                    { ['good','afternoon','everybody'].map((s,i) => (
-                        <MsgCards key={s} initMessage={s} onDelete={() => {}}/>
+                    { this.state.tasks.map((s) => (
+                        <MsgCards key={s.text} initMessage={s.text} onDelete={() => {}}/>
                     ))}
                     </div>
                 </div>
