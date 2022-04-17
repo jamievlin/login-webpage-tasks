@@ -166,3 +166,36 @@ def delete_session(session: bytes) -> bool:
             return False
     return True
 
+
+def clear_all_sessions(user_id: int, excl_session: ty.Optional[bytes]) -> \
+        bool:
+    query = """
+    DELETE FROM login_webpage.sessions
+    WHERE 
+        (user_id=%(uid)s)
+    AND (
+        (%(excl_sess)s=FALSE) OR (session_id<>%(session)s) 
+    )
+    """
+
+    # (A=FALSE) OR (B) is used to show logical implication
+    # i.e. if A then B
+    # In this case, if excl_sess is set to true, then session must not equal
+    # the specified session as well
+
+    enable_exclude_session = excl_session is not None
+    dud_bytes = b'0'
+    val = {
+        'uid': user_id,
+        'excl_sess': enable_exclude_session,
+        'session': excl_session if enable_exclude_session else dud_bytes
+        # if excl_sess is False, session value is ignored, hence the dud b'0'.
+    }
+
+    with db_conn(True) as cur:
+        try:
+            cur.execute(query, val)
+        except mysql.connector.Error as e:
+            print(f'error: {e}')
+            return False
+    return True
