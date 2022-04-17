@@ -44,7 +44,7 @@ def get_username(user_id: int) -> ty.Optional[str]:
     query = """
     SELECT user_name
     FROM login_webpage.user_login
-    WHERE user_id = %d
+    WHERE user_id = %s
     """
     ret = fetch_one(query, (user_id, ))
     if ret is None:
@@ -62,7 +62,7 @@ def create_session(
     query = """
     INSERT INTO login_webpage.sessions
     (session_id, user_id, expiry, ip_addr)
-    VALUES (%s, %d, %s, %s)
+    VALUES (%s, %s, %s, %s)
     """
     userid = get_userid(username)
     if userid is None:
@@ -84,7 +84,7 @@ def clear_all_session(username: str):
 
     query = """
     DELETE FROM login_webpage.sessions
-    WHERE user_id = %d
+    WHERE user_id = %s
     """
 
     with db_conn(True) as cur:
