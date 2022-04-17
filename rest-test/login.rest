@@ -27,3 +27,13 @@ Authorization: Bearer 338ae04436de8d00ea9576d08ff45d229acee3fd5782b8b298a4973cd2
 ### sample getting tasks
 GET http://{{hostname}}/api/user/3/tasks
 Authorization: Basic {{base_username}} {{base_password}}
+
+
+### sample posting tasks
+POST http://{{hostname}}/api/user/3/tasks
+Authorization: Basic {{base_username}} {{base_password}}
+Content-Type: application/json
+
+{
+  "text": "oh hi hello again!"
+}
