@@ -18,6 +18,7 @@ def ev_loop(username: str):
         print('enter cs to clear all sessions')
         print('enter ns to create a new session')
         print('enter lt to list all tasks')
+        print('enter nt to list all tasks')
         print('enter e to exit')
         inp = input('input: ')
         match inp:
@@ -42,6 +43,11 @@ def ev_loop(username: str):
                 ret = Message.get_msg_by_user(user_id)
                 for msg in ret:
                     print(f'[{msg.created.isoformat()}]: {msg.text}')
+            case 'nt':
+                msg = input('Enter task message: ')
+                msg_obj = Message(None, user_id, text=msg)
+                msg_obj.save_to_db()
+                print(f'Saved! Message ID: {msg_obj.msg_id}')
             case 'cs':
                 am.clear_all_session(username)
             case 'e':
