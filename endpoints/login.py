@@ -53,5 +53,3 @@ def logout():
                             f'logged out successfully')
 
     return jsonify(), HTTPStatus.NO_CONTENT
-
-
