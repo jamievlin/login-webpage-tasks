@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import mysql.connector
-import mariadb
 from contextlib import contextmanager
 import typing as ty
 
@@ -26,7 +25,7 @@ class DbCursor:
 
 @contextmanager
 def db_conn(commit=False):
-    conn = mariadb.connect(
+    conn = mysql.connector.MySQLConnection(
         user='default', password='password',
         host='localhost', port=3306,
         database='login_webpage'
@@ -45,6 +44,6 @@ def fetch_one(query: str, in_val: tuple) -> ty.Optional[tuple]:
             cur.execute(query, in_val)
             ret = cur.fetchone()
             return ret
-        except mariadb.Error as e:
+        except mysql.connector.Error as e:
             print(f'error: {e}')
             return None

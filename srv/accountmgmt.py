@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import datetime
-import mariadb
+import mysql.connector
 import secrets
 import typing as ty
 import ipaddress
@@ -20,7 +20,7 @@ def create_user(username: str, password: str):
     with db_conn(True) as cur:
         try:
             cur.execute(query, (username, new_hash))
-        except mariadb.Error as e:
+        except mysql.connector.Error as e:
             if e.errno == 1062:
                 print(f'User {username} already exists!')
             else:
@@ -71,7 +71,7 @@ def create_session(
     with db_conn(True) as cur:
         try:
             cur.execute(query, (session_bytes, userid, expiry, ip_addr.packed))
-        except mariadb.Error as e:
+        except mysql.connector.Error as e:
             print(f'error: {e}')
             return None
     return session_bytes, expiry
@@ -90,7 +90,7 @@ def clear_all_session(username: str):
     with db_conn(True) as cur:
         try:
             cur.execute(query, (userid,))
-        except mariadb.Error as e:
+        except mysql.connector.Error as e:
             print(f'error: {e}')
             return None
 
@@ -106,7 +106,7 @@ def change_password(username: str, new_password: str):
     with db_conn(True) as cur:
         try:
             cur.execute(query, {'pwdhash': new_hash, 'usr': username})
-        except mariadb.Error as e:
+        except mysql.connector.Error as e:
             print(f'oops... {e}')
 
 
@@ -133,7 +133,7 @@ def verify_session(session: bytes) -> \
     with db_conn(True) as cur:
         try:
             cur.execute(update_expiry, (new_expiry, session))
-        except mariadb.Error as e:
+        except mysql.connector.Error as e:
             print(f'error: {e}')
             return username, expiry
     return username, new_expiry
@@ -161,7 +161,7 @@ def delete_session(session: bytes) -> bool:
     with db_conn(True) as cur:
         try:
             cur.execute(query, (session, ))
-        except mariadb.Error as e:
+        except mysql.connector.Error as e:
             print(f'error: {e}')
             return False
     return True
