@@ -3,6 +3,8 @@ import srv.accountmgmt as am
 import getpass
 import ipaddress
 
+from srv.tasks_collection import Message
+
 TEST_USER = 'jamie'
 TEST_PASSWORD = 'letmein'
 
@@ -15,6 +17,7 @@ def ev_loop(username: str):
         print('enter c to change password.')
         print('enter cs to clear all sessions')
         print('enter ns to create a new session')
+        print('enter lt to list all tasks')
         print('enter e to exit')
         inp = input('input: ')
         match inp:
@@ -35,6 +38,10 @@ def ev_loop(username: str):
                 new_session, expiry = ret
                 print(f'session token: 0x{new_session.hex()}')
                 print(f'expiry: {expiry.isoformat()}')
+            case 'lt':
+                ret = Message.get_msg_by_user(user_id)
+                for msg in ret:
+                    print(f'[{msg.created.isoformat()}]: {msg.text}')
             case 'cs':
                 am.clear_all_session(username)
             case 'e':
