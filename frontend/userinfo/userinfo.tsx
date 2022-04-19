@@ -1,9 +1,10 @@
 import React from "react";
 import {Configuration, DefaultApi} from "apis";
-import { Task } from "apis/models/Task"
-import MsgCards from 'components/msgcards/msgcards'
+import { Task } from "apis/models/Task";
+import MsgCards from 'components/msgcards/msgcards';
 
-import  './userinfo.less';
+import '@cds/core/global.min.css';
+import './userinfo.less';
 
 
 interface UserInfoState {

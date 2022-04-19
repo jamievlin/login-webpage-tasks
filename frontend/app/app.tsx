@@ -4,7 +4,7 @@ import { CdsInput } from "@cds/react/input";
 import { CdsPassword } from "@cds/react/password";
 import { CdsFormGroup } from "@cds/react/forms";
 
-import '@cds/core/global.min.css'
+import '@cds/core/global.min.css';
 import './app.less';
 
 import 'apis';
@@ -56,7 +56,7 @@ class App extends React.Component<{}, AppState> {
             this.setState({loginState: loginState.loginSuccess});
             sessionStorage['session'] = rsp.session
             window.location.href = `${window.location.origin}/userinfo`
-        }).catch((err: Response) => {
+        }).catch((_: Response) => {
             this.setState({loginState: loginState.loginFailed});
         });
     }
