@@ -74,7 +74,7 @@ class Message:
     def get_msg_by_user(cls: ty.Type[M], user_id: int, max_count=100) \
             -> ty.List[M]:
         query = """
-        SELECT * 
+        SELECT *
         FROM login_webpage.tasks_collection
         WHERE user_id=%s
         ORDER BY created

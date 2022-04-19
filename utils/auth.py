@@ -13,7 +13,7 @@ def get_username_auth() -> ty.Optional[str]:
             return auth.username
         else:
             current_app.logger.info(f'User {auth.username} login failed!')
-    current_app.logger.info(f'Login attempt failed!')
+    current_app.logger.info('Login attempt failed!')
     return None
 
 
@@ -24,7 +24,7 @@ def get_username_by_session() -> ty.Optional[str]:
             usr, expiry = ret
             current_app.logger.info(f'User {usr} login success by token')
             return usr
-    current_app.logger.info(f'Login attempt failed!')
+    current_app.logger.info('Login attempt failed!')
     return None
 
 

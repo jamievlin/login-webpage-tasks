@@ -171,10 +171,10 @@ def clear_all_sessions(user_id: int, excl_session: ty.Optional[bytes]) -> \
         bool:
     query = """
     DELETE FROM login_webpage.sessions
-    WHERE 
+    WHERE
         (user_id=%(uid)s)
     AND (
-        (%(excl_sess)s=FALSE) OR (session_id<>%(session)s) 
+        (%(excl_sess)s=FALSE) OR (session_id<>%(session)s)
     )
     """
 
