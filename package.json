@@ -27,6 +27,7 @@
     "webpack-dev-server": "^4.7.4"
   },
   "betterScripts": {
+    "regen:api": "bnr clean:api && bnr build:api",
     "clean:api": "rimraf frontend/apis/",
     "clean:bundle": "rimraf static/dist/bundle.js",
     "clean:all": "bnr clean:api && bnr clean:bundle",
@@ -42,6 +43,7 @@
     }
   },
   "scripts": {
+    "regen-api": "bnr regen:api",
     "clean": "bnr clean:all",
     "build-all-dev": "bnr build:all-dev",
     "build-dev": "bnr build:dev",
