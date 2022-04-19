@@ -16,6 +16,39 @@ components:
     bearer:
       type: http
       scheme: bearer
+  parameters:
+    userId:
+      name: userid
+      in: path
+      description: User ID
+      required: true
+      schema:
+        type: integer
+    taskid:
+      name: taskid
+      in: path
+      description: Task ID
+      required: true
+      schema:
+        type: integer
+  responses:
+    '401':
+      description: 'Unauthorized'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/failedMessage'
+    '404':
+      description: 'not found'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/failedMessage'
+    204Deleted:
+      description: 'session destroyed'
+      content:
+        application/json:
+          schema: { }
   schemas:
     failedMessage:
       type: object
@@ -68,6 +101,8 @@ paths:
                     type: boolean
                 required:
                   - valid
+        '401':
+          $ref: '#/components/responses/401'
   /user/{userid}/tasks:
     get:
       operationId: tasksGet
@@ -76,12 +111,7 @@ paths:
         - basic: []
         - bearer: []
       parameters:
-        - name: userid
-          in: path
-          description: User ID
-          required: true
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/userId'
       responses:
         '200':
           description: 'successful'
@@ -90,11 +120,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/tasks'
         '401':
-          description: 'Unauthorized'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/failedMessage'
+          $ref: '#/components/responses/401'
   /login:
     post:
       operationId: loginPost
@@ -117,11 +143,7 @@ paths:
                   - session
                   - expiry
         '401':
-          description: 'failed'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/failedMessage'
+          $ref: '#/components/responses/401'
   /userdata:
     get:
       operationId: userDataGet
@@ -145,11 +167,7 @@ paths:
                   - username
                   - userid
         '404':
-          description: 'failure'
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/failedMessage"
+          $ref: '#/components/responses/404'
   /logout:
     delete:
       operationId: deleteSession
@@ -158,16 +176,9 @@ paths:
         - bearer: []
       responses:
         '204':
-          description: 'session destroyed'
-          content:
-            application/json:
-              schema: {}
+          $ref: '#/components/responses/204Deleted'
         '404':
-          description: 'token not found'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/failedMessage'
+          $ref: '#/components/responses/404'
         '500':
           description: 'cannot remove token for some reason'
           content:
