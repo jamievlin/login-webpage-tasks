@@ -83,6 +83,21 @@ class UserInfo extends React.Component<{}, UserInfoState> {
         })
     }
 
+    deleteTask(task: Task) {
+        console.log(`deleting task with id ${task.msgId}`);
+        this.state.api?.deleteTask({
+            userid: this.state.userid,
+            taskid: task.msgId
+        }).then(_ => {
+            let newTaskList = this.state.tasks.filter(t => t.msgId !== task.msgId);
+            this.setState({
+                tasks: newTaskList
+            })}
+        ).catch(err => {
+            console.error(`err: ${err}`)
+        });
+    }
+
     render() {
         return (
             <div className={"app-layout"} cds-layout={"vertical align:stretch"}>
@@ -95,7 +110,7 @@ class UserInfo extends React.Component<{}, UserInfoState> {
                 <div cds-layout={"m:md"}>
                     <div className={"app-card-layout"} cds-layout={"grid cols@md:6 cols@lg:3 gap:md"} >
                     { this.state.tasks.map((s) => (
-                        <MsgCards key={s.text} initMessage={s.text} onDelete={() => {}}/>
+                        <MsgCards key={s.text} initMessage={s.text} onDelete={() => this.deleteTask(s)}/>
                     ))}
                     </div>
                 </div>
