@@ -89,3 +89,27 @@ class Message:
             rows = cur.fetchmany(max_count)
 
         return [cls(*dat) for dat in rows]
+
+
+def delete_message(message_ids: int | ty.List[int] | ty.Tuple[int]):
+    if isinstance(message_ids, int):
+        message_ids = (message_ids,)
+    elif isinstance(message_ids, list):
+        message_ids = tuple(message_ids)
+    else:
+        raise ValueError('Message must be an integer or a '
+                         'collection of integers!')
+    assert isinstance(message_ids, tuple)
+
+    query = f"""
+    DELETE FROM login_webpage.tasks_collection
+    WHERE msg_id in ({','.join(['%s'] * len(message_ids))})
+    """
+
+    with DbCursor(True) as cur:
+        try:
+            cur.execute(query, tuple(message_ids))
+        except mysql.connector.Error as e:
+            print(f'Error: {e}')
+            return None
+    return True

@@ -6,7 +6,7 @@ from flask import (
 from utils import auth
 from srv import accountmgmt as am
 from http import HTTPStatus
-from srv.tasks_collection import Message
+from srv.tasks_collection import Message, delete_message
 
 taskscollection = Blueprint(
     'taskscollection', __name__, template_folder='templates')
@@ -31,6 +31,22 @@ def handle_tasks(user_id: int):
             return jsonify(message='No method exists!'), \
                    HTTPStatus.METHOD_NOT_ALLOWED
     return fn(user_id)
+
+
+@taskscollection.route('/api/user/<int:user_id>/tasks/<int:message_id>',
+                       methods=['DELETE'])
+def delete_task(user_id: int, message_id: int):
+    usr = auth.get_username_by_pw_or_session()
+    usr_id_auth = am.get_userid(usr)
+    if user_id != usr_id_auth:
+        return \
+            jsonify(message='No permission to access!'), \
+            HTTPStatus.UNAUTHORIZED
+
+    if delete_message(message_id) is None:
+        return jsonify(message='Server Error'), \
+               HTTPStatus.INTERNAL_SERVER_ERROR
+    return jsonify(), HTTPStatus.NO_CONTENT
 
 
 def get_tasks(user_id: int):
