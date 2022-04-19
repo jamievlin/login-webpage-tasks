@@ -21,6 +21,10 @@ module.exports = {
             {
                 test: /\.less$/,
                 use: ['style-loader', 'css-loader', 'less-loader']
+            },
+            {
+                test: /\.(eot|svg|ttf|woff|woff2)$/,
+                type: 'asset/resource'
             }
         ]
     },
@@ -30,7 +34,7 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'static/dist'),
-        publicPath: 'static/dist',
+        publicPath: 'static/dist/',
         filename: '[name].bundle.js',
         clean: true
     },
