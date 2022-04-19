@@ -121,6 +121,23 @@ paths:
                 $ref: '#/components/schemas/tasks'
         '401':
           $ref: '#/components/responses/401'
+  /user/{userid}/tasks/{taskid}:
+    delete:
+      operationId: deleteTask
+      summary: delete a task
+      security:
+        - basic: []
+        - bearer: []
+      parameters:
+        - $ref: '#/components/parameters/userId'
+        - $ref: '#/components/parameters/taskid'
+      responses:
+        '204':
+          $ref: '#/components/responses/204Deleted'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
   /login:
     post:
       operationId: loginPost
