@@ -33,8 +33,18 @@ def verify_session(session_hex: str):
     print(f'Expiry: {expiry.isoformat()}')
 
 
+@click.command()
+@click.option('--username', prompt='username')
+@click.option('--password', prompt=True, hide_input=True,
+              confirmation_prompt=True)
+def create_user(username: str, password: str):
+    am.create_user(username, password)
+
+
 main.add_command(get_userid)
 main.add_command(verify_session)
+main.add_command(create_user)
+
 
 if __name__ == '__main__':
     main()
