@@ -127,6 +127,36 @@ paths:
                 $ref: '#/components/schemas/tasks'
         '401':
           $ref: '#/components/responses/401'
+    post:
+      operationId: taskPost
+      summary: upload a task
+      security:
+        - basic: []
+        - bearer: []
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+              required:
+                - text
+      responses:
+        '201':
+          description: 'successful'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/task'
+        '401':
+          $ref: '#/components/responses/401'
+        '500':
+          $ref: '#/components/responses/500'
   /user/{userid}/tasks/{taskid}:
     delete:
       operationId: deleteTask
