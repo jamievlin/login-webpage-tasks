@@ -110,7 +110,7 @@ class UserInfo extends React.Component<{}, UserInfoState> {
                 <div cds-layout={"m:md"}>
                     <div className={"app-card-layout"} cds-layout={"grid cols@md:6 cols@lg:3 gap:md"} >
                     { this.state.tasks.map((s) => (
-                        <MsgCards key={s.text} initMessage={s.text} onDelete={() => this.deleteTask(s)}/>
+                        <MsgCards key={`task-${s.msgId}`} initMessage={s.text} onDelete={() => this.deleteTask(s)}/>
                     ))}
                     </div>
                 </div>
