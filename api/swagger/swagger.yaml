@@ -44,6 +44,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/failedMessage'
+    '500':
+      description: 'server error'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/failedMessage'
     204Deleted:
       description: 'session destroyed'
       content:
