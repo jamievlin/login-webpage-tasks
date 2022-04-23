@@ -5,6 +5,7 @@ import MsgCards from 'components/msgcards/msgcards';
 
 import '@cds/core/global.min.css';
 import './userinfo.less';
+import AddTaskDialog from "../components/addtaskdiag";
 
 
 interface UserInfoState {
@@ -12,6 +13,8 @@ interface UserInfoState {
     username: string
     userid: number
     tasks: Task[]
+
+    hasAddModal: boolean
 }
 
 function returnToLogin() {
@@ -25,11 +28,14 @@ class UserInfo extends React.Component<{}, UserInfoState> {
             api: undefined,
             username: '',
             userid: -1,
-            tasks: []
+            tasks: [],
+            hasAddModal: false
         };
 
         this.setComponentValues = this.setComponentValues.bind(this);
         this.onLogoutBtnClick = this.onLogoutBtnClick.bind(this);
+        this.renderModal = this.renderModal.bind(this);
+        this.postTasks = this.postTasks.bind(this);
     }
 
     componentDidMount() {
@@ -98,6 +104,38 @@ class UserInfo extends React.Component<{}, UserInfoState> {
         });
     }
 
+    postTasks(text: string): Promise<void> {
+        if (this.state.api === undefined) {
+            return Promise.reject();
+        }
+
+        return this.state.api.taskPost({
+            userid: this.state.userid,
+            inlineObject: {
+                text: text
+            }
+        }).then(tasks => {
+            this.setState({
+                tasks: this.state.tasks.concat(tasks)
+            })
+        }, _ => {
+            return Promise.reject()
+        })
+    }
+
+    renderModal() {
+        return this.state.hasAddModal ?
+            <AddTaskDialog
+                closeFn={() => {
+                    this.setState({
+                        hasAddModal: false
+                    })}
+                }
+                postTaskFn={this.postTasks}
+            />
+            : <></>;
+    }
+
     render() {
         return (
             <div className={"app-layout"} cds-layout={"vertical align:stretch"}>
@@ -108,6 +146,7 @@ class UserInfo extends React.Component<{}, UserInfoState> {
                        cds-layout={"align:right"}>Logout</a>
                 </header>
                 <div cds-layout={"m:md"}>
+                    { this.renderModal() }
                     <div className={"app-card-layout"} cds-layout={"grid cols@md:6 cols@lg:3 gap:md"} >
                     { this.state.tasks.map((s) => (
                         <MsgCards key={`task-${s.msgId}`} initMessage={s.text} onDelete={() => this.deleteTask(s)}/>
