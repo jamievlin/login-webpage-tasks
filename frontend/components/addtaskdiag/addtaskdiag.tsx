@@ -59,7 +59,10 @@ class AddTaskDialog extends React.Component<AddTaskDialogProps, AddTaskDialogSta
                     <label>Your Task</label>
                     <textarea
                         onChange={this.onChangeTextArea}
-                    ></textarea>
+                        placeholder={"Get a large Raspberry Peppermint Mocha for the morning"}
+                    >
+                        { this.state.text }
+                    </textarea>
                     { this.renderErrorText() }
                 </CdsTextarea>
             </CdsModalActions>
