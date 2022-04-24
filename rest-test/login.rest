@@ -37,3 +37,13 @@ Content-Type: application/json
 {
   "text": "oh hi hello again!"
 }
+
+
+### sample updating tasks
+PATCH http://{{hostname}}/api/user/{{base_userid}}/tasks/24
+Authorization: Basic {{base_username}} {{base_password}}
+Content-Type: application/json
+
+{
+  "starred": false
+}
