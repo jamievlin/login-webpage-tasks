@@ -6,6 +6,8 @@ import MsgCards from 'components/msgcards/msgcards';
 import '@cds/core/global.min.css';
 import './userinfo.less';
 import AddTaskDialog from "../components/addtaskdiag";
+import {CdsDivider} from "@cds/react/divider";
+import {CdsButton} from "@cds/react/button";
 
 
 interface UserInfoState {
@@ -36,6 +38,7 @@ class UserInfo extends React.Component<{}, UserInfoState> {
         this.onLogoutBtnClick = this.onLogoutBtnClick.bind(this);
         this.renderModal = this.renderModal.bind(this);
         this.postTasks = this.postTasks.bind(this);
+        this.onAddTaskClick = this.onAddTaskClick.bind(this);
     }
 
     componentDidMount() {
@@ -136,6 +139,12 @@ class UserInfo extends React.Component<{}, UserInfoState> {
             : <></>;
     }
 
+    onAddTaskClick() {
+        this.setState({
+            hasAddModal: true
+        });
+    }
+
     render() {
         return (
             <div className={"app-layout"} cds-layout={"vertical align:stretch"}>
@@ -149,10 +158,19 @@ class UserInfo extends React.Component<{}, UserInfoState> {
                     { this.renderModal() }
                 </div>
                 <div cds-layout={"m:md"}>
-                    <div className={"app-card-layout"} cds-layout={"grid cols@md:6 cols@lg:3 gap:md"} >
-                    { this.state.tasks.map((s) => (
-                        <MsgCards key={`task-${s.msgId}`} initMessage={s.text} onDelete={() => this.deleteTask(s)}/>
-                    ))}
+                    <div cds-layout={"vertical gap:md"}> {/* main app location*/}
+                        <div cds-layout={"horizontal gap:md"}>
+                            <CdsButton
+                                size={"sm"}
+                                onClick={this.onAddTaskClick}
+                            >New Task</CdsButton>
+                        </div>
+                        <CdsDivider></CdsDivider>
+                        <div cds-layout={"grid cols@md:6 cols@lg:3 gap:md"} >
+                        { this.state.tasks.map((s) => (
+                            <MsgCards key={`task-${s.msgId}`} initMessage={s.text} onDelete={() => this.deleteTask(s)}/>
+                        ))}
+                        </div>
                     </div>
                 </div>
             </div>
