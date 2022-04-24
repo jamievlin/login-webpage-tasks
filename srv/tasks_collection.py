@@ -71,6 +71,27 @@ class Message:
         }
 
     @classmethod
+    def from_id(cls: ty.Type[M], msg_id: int) -> ty.Optional[M]:
+        query = """
+        SELECT *
+        FROM login_webpage.tasks_collection
+        WHERE msg_id=%s
+        """
+
+        with DbCursor() as cur:
+            try:
+                cur.execute(query, (msg_id, ))
+                row = cur.fetchone()
+            except mysql.connector.Error as e:
+                print(f'Error: {e}')
+                raise RuntimeError(f'Error: {e}')
+
+        if row is None:
+            return None
+        else:
+            return cls(*row)
+
+    @classmethod
     def get_msg_by_user(cls: ty.Type[M], user_id: int, max_count=100) \
             -> ty.List[M]:
         query = """
