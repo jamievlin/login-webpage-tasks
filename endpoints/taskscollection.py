@@ -34,7 +34,7 @@ def handle_tasks(user_id: int):
 
 
 @taskscollection.route('/api/user/<int:user_id>/tasks/<int:message_id>',
-                       methods=['DELETE'])
+                       methods=['DELETE', 'PATCH'])
 def delete_task(user_id: int, message_id: int):
     usr = auth.get_username_by_pw_or_session()
     usr_id_auth = am.get_userid(usr)
@@ -43,10 +43,34 @@ def delete_task(user_id: int, message_id: int):
             jsonify(message='No permission to access!'), \
             HTTPStatus.UNAUTHORIZED
 
-    if delete_message(message_id) is None:
-        return jsonify(message='Server Error'), \
+    match request.method:
+        case 'DELETE':
+            if delete_message(message_id) is None:
+                return jsonify(message='Server Error'), \
+                       HTTPStatus.INTERNAL_SERVER_ERROR
+            return jsonify(), HTTPStatus.NO_CONTENT
+        case 'PATCH':
+            return patch_message(message_id)
+
+
+def patch_message(msg_id: int):
+    payload = request.get_json()
+    try:
+        msg = Message.from_id(msg_id)
+    except RuntimeError:
+        return jsonify(message='MariaDB Server error'), \
                HTTPStatus.INTERNAL_SERVER_ERROR
-    return jsonify(), HTTPStatus.NO_CONTENT
+    if msg is None:
+        return jsonify(message='Message not found!'), \
+               HTTPStatus.NOT_FOUND
+
+    if not msg.update_msg(
+            new_text=payload.get('text', None),
+            starred=payload.get('starred', None)):
+        return jsonify(message='Unknown Error'), \
+               HTTPStatus.INTERNAL_SERVER_ERROR
+
+    return jsonify(), HTTPStatus.OK
 
 
 def get_tasks(user_id: int):

@@ -174,6 +174,38 @@ paths:
           $ref: '#/components/responses/401'
         '404':
           $ref: '#/components/responses/404'
+    patch:
+      operationId: patchTask
+      summary: update a task
+      security:
+        - basic: []
+        - bearer: []
+      parameters:
+        - $ref: '#/components/parameters/userId'
+        - $ref: '#/components/parameters/taskid'
+      responses:
+        '200':
+          description: 'successful'
+          content:
+            application/json:
+              schema: {}
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                starred:
+                  type: boolean
   /login:
     post:
       operationId: loginPost
