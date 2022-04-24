@@ -145,8 +145,10 @@ class UserInfo extends React.Component<{}, UserInfoState> {
                        onClick={this.onLogoutBtnClick}
                        cds-layout={"align:right"}>Logout</a>
                 </header>
-                <div cds-layout={"m:md"}>
+                <div>
                     { this.renderModal() }
+                </div>
+                <div cds-layout={"m:md"}>
                     <div className={"app-card-layout"} cds-layout={"grid cols@md:6 cols@lg:3 gap:md"} >
                     { this.state.tasks.map((s) => (
                         <MsgCards key={`task-${s.msgId}`} initMessage={s.text} onDelete={() => this.deleteTask(s)}/>
