@@ -9,7 +9,7 @@ import './msgcards.less'
 interface MsgCardProps {
     initMessage: string,
     onDelete: () => void,
-
+    onEditClick: () => void
 }
 
 const MsgCards = (props: MsgCardProps) => {
@@ -25,7 +25,8 @@ const MsgCards = (props: MsgCardProps) => {
                 </div>
 
                 <CdsDivider cds-card-remove-margin />
-                <div cds-layout={"horizontal gap:xs align:vertical-center"}>
+                <div cds-layout={"horizontal gap:md align:vertical-center"}>
+                    <CdsButton action={"flat-inline"} onClick={() => props.onEditClick()}>Edit</CdsButton>
                     <CdsButton action={"flat-inline"} onClick={() => props.onDelete()}>Delete</CdsButton>
                 </div>
             </div>

@@ -9,6 +9,8 @@ import AddTaskDialog from "../components/addtaskdiag";
 import {CdsDivider} from "@cds/react/divider";
 import {CdsButton} from "@cds/react/button";
 
+import editTaskDialog from "components/edittaskdiag"
+import {EditTaskDialog} from "../components/edittaskdiag/edittaskdiag";
 
 interface UserInfoState {
     api?: DefaultApi
@@ -17,6 +19,8 @@ interface UserInfoState {
     tasks: Task[]
 
     hasAddModal: boolean
+
+    editTaskInit?: editTaskDialog.EditTaskDialogProps
 }
 
 function returnToLogin() {
@@ -139,6 +143,33 @@ class UserInfo extends React.Component<{}, UserInfoState> {
             : <></>;
     }
 
+    renderEditModal() {
+        return this.state.editTaskInit !== undefined
+            ? <EditTaskDialog {...this.state.editTaskInit} />
+            : null;
+    }
+
+    onEditTaskClick(task: Task, index: number) {
+        if (this.state.api !== undefined) {
+            this.setState({
+                editTaskInit: {
+                    api: this.state.api,
+                    userId: this.state.userid,
+                    msgId: task.msgId,
+                    msgText: task.text,
+                    postTaskFn: async (newText) => {
+                        let newTaskArray = [...this.state.tasks];
+                        newTaskArray[index].text = newText;
+                        this.setState({tasks: newTaskArray});
+                    },
+                    closeFn: () => {
+                        this.setState({editTaskInit: undefined});
+                    }
+                }
+            })
+        }
+    }
+
     onAddTaskClick() {
         this.setState({
             hasAddModal: true
@@ -156,6 +187,7 @@ class UserInfo extends React.Component<{}, UserInfoState> {
                 </header>
                 <div>
                     { this.renderModal() }
+                    { this.renderEditModal() }
                 </div>
                 <div cds-layout={"m:md"}>
                     <div cds-layout={"vertical gap:md"}> {/* main app location*/}
@@ -167,8 +199,13 @@ class UserInfo extends React.Component<{}, UserInfoState> {
                         </div>
                         <CdsDivider></CdsDivider>
                         <div cds-layout={"grid cols@md:6 cols@lg:3 gap:md"} >
-                        { this.state.tasks.map((s) => (
-                            <MsgCards key={`task-${s.msgId}`} initMessage={s.text} onDelete={() => this.deleteTask(s)}/>
+                        { this.state.tasks.map((s, i) => (
+                            <MsgCards
+                                key={`task-${s.msgId}`}
+                                initMessage={s.text}
+                                onDelete={() => this.deleteTask(s)}
+                                onEditClick={() => this.onEditTaskClick(s, i)}
+                            />
                         ))}
                         </div>
                     </div>
