@@ -60,6 +60,48 @@ class Message:
             self.msg_id, = cur2.fetchone()
         return self.user_id
 
+    def update_to_db(self) -> bool:
+        query = """
+        UPDATE login_webpage.tasks_collection
+        SET
+        content=%(content)s,
+        starred=%(starred)s,
+        updated=%(updated)s
+        WHERE msg_id=%(msgid)s
+        """
+
+        val = {
+            'content': self.text,
+            'starred': self.starred,
+            'updated': self.updated,
+            'msgid': self.msg_id
+        }
+        with DbCursor(True) as cur:
+            try:
+                cur.execute(query, val)
+            except mysql.connector.Error as e:
+                print(f'Error: {e}')
+                return False
+
+        return True
+
+    def update_msg(
+            self,
+            new_text: ty.Optional[str],
+            starred: ty.Optional[bool]) -> bool:
+        updated = False
+        if new_text is not None:
+            self.text = new_text
+            updated = True
+        if starred is not None:
+            self.starred = starred
+            updated = True
+
+        if updated:
+            self.updated = datetime.now()
+            return self.update_to_db()
+        return True
+
     def dictify(self) -> dict:
         return {
             'msg_id': self.msg_id,
